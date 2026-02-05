@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="d-flex" style="min-height:100vh; background-color:#0e0e12; color:white;">
+    <!-- Sidebar -->
+    <div style="width:220px; background-color:#2d0f47; padding:20px; flex-shrink:0; min-height:100vh;">
+        <div class="d-flex align-items-center justify-content-between">
+            <h2 style="color:#a259ff; margin:0;">Budget Buddy</h2>
+            <a href="{{ path('profile') }}"
+               style="color:#a259ff; font-size:30px; text-decoration:none; transition:0.3s;"
+               title="Profiel"
+               onmouseover="this.style.color='#8a1fff'"
+               onmouseout="this.style.color='#a259ff'">
+                <i class="bi bi-person-circle"></i>
+            </a>
+        </div>
+
+        <ul class="list-unstyled mt-4">
+            <li class="my-2"><a href="/dashboard" class="text-white text-decoration-none">Dashboard</a></li>
+            <li class="my-2"><a href="/category" class="text-white text-decoration-none">Categories</a></li>
+            <li class="my-2"><a href="/transaction" class="text-white text-decoration-none">Transactions</a></li>
+            <li class="my-2"><a href="/budget" class="text-white text-decoration-none">Budgets</a></li>
+            <li class="my-2"><a href="/contact" class="text-white text-decoration-none">Contact</a></li>
+            <li class="my-2"><a href="/report" class="text-white text-decoration-none">Transactions Report</a></li>
+
+        </ul>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-grow-1 p-4">
+        {% block body %}{% endblock %}
+    </div>
+</div>
+
+<!-- Fancy Footer -->
+<footer class="text-light position-relative" style="background: linear-gradient(135deg, #2d0f47, #0e0e12); overflow:hidden;">
+    <div class="container py-5 position-relative" style="z-index:2;">
+        <div class="row">
+            <!-- Quick Links -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase text-white">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/dashboard" class="text-white text-decoration-none">Dashboard</a></li>
+                    <li><a href="/transaction" class="text-white text-decoration-none">Transactions</a></li>
+                    <li><a href="/budget" class="text-white text-decoration-none">Budgets</a></li>
+                </ul>
+            </div>
+
+            <!-- Resources -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase text-white">Resources</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Guides</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase text-white">Follow Us</h6>
+                <div class="mt-3">
+                    <a href="https://twitter.com" target="_blank" class="text-white me-3 fs-5"><i class="bi bi-twitter"></i></a>
+                    <a href="https://facebook.com" target="_blank" class="text-white me-3 fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase text-white">Our Location</h6>
+                <div class="ratio ratio-4x3 mt-2 rounded overflow-hidden shadow-sm">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d893.423969825194!2d4.350270877207488!3d52.024254920399905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c5b5d771b631e7%3A0xcbe808e083d3d558!2sROC%20Mondriaan%20-%20Brasserskade!5e0!3m2!1snl!2snl!4v1760702583900!5m2!1snl!2snl"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Note -->
+        <div class="text-center pt-4 mt-4 border-top border-secondary small">
+            <p class="mb-0 text-white">&copy; 2025 Budget Buddy. Designed with 💜 to help you master your money.</p>
+        </div>
+    </div>
+
+    <!-- Decorative Background -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index:1; pointer-events:none;">
+        <div style="position:absolute; top:20%; left:10%; width:200px; height:200px; background:radial-gradient(circle, rgba(162,89,255,0.5) 0%, transparent 70%); filter: blur(80px);"></div>
+        <div style="position:absolute; bottom:15%; right:10%; width:200px; height:200px; background:radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); filter: blur(80px);"></div>
+    </div>
+</footer>
+</body>
+</html>

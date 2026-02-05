@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nieuwe Transactie{% endblock %}
+
+{% block body %}
+    <style>
+        /* Body background gradient en algemene font instellingen */
+        body {
+            background: radial-gradient(circle at top left, #a259ff, #3b0a83, #120027);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientMove {
+            0% {background-position: 0% 50%;} /* startpositie */
+        50% {background-position: 100% 50%;} /* midden van de animatie */
+        100% {background-position: 0% 50%;} /* terug naar start */
+        }
+
+        /* Form container styling */
+           .form-card {
+               background: rgba(25, 5, 45, 0.95); /* semi-transparant paars*/
+           border-radius: 25px;
+               padding: 45px;
+               max-width: 650px;
+               margin: 70px auto; /* center horizontaal en verticaal margin */
+           box-shadow: 0 0 35px rgba(162, 89, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.2) inset;
+               border: 1px solid rgba(162, 89, 255, 0.5);
+               transition: all 0.4s ease;
+               position: relative;
+               overflow: hidden;
+           }
+
+        /* Decoratieve animatie in form-card */
+           .form-card::before {
+               content: "";
+               position: absolute;
+               top: -50%;
+               left: -50%;
+               width: 200%;
+               height: 200%;
+               background: radial-gradient(circle, rgba(162,89,255,0.3), transparent 70%);
+               animation: spin 10s linear infinite;
+               z-index: 0;
+           }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Titel van het formulier */
+           h2 {
+               color: #fff;
+               text-align: center;
+               font-weight: 700;
+               letter-spacing: 1px;
+               text-shadow: 0 0 20px rgba(162, 89, 255, 1), 0 0 40px rgba(162, 89, 255, 0.6);
+               margin-bottom: 35px;
+               position: relative;
+               z-index: 2;
+           }
+
+        /* Labels styling  */
+           label {
+               color: #ffffff;
+               font-weight: 500;
+               text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+               position: relative;
+               z-index: 2;
+           }
+
+        /* Input en select styling */
+           .form-control, .form-select {
+               background-color: rgba(45, 15, 71, 0.9);
+               color: white;
+               border: 1px solid rgba(255, 255, 255, 0.3);
+               border-radius: 12px;
+               padding: 12px 15px;
+               box-shadow: inset 0 0 15px rgba(162, 89, 255, 0.4), 0 0 10px rgba(162, 89, 255, 0.3);
+               transition: all 0.3s ease;
+               z-index: 2;
+               position: relative;
+           }
+
+        /* Focus effect voor inputs en selects */
+           .form-control:focus, .form-select:focus {
+               outline: none;
+               border-color: #fff;
+               box-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 0 0 15px rgba(162, 89, 255, 1);
+               background-color: rgba(80, 20, 130, 0.95);
+           }
+
+        /* Opslaan knop styling */
+           button.btn {
+               background: linear-gradient(90deg, #ff00ff, #a259ff, #00ffff);
+               background-size: 300% 300%;
+               animation: gradientShift 6s ease infinite;
+               color: white;
+               border: none;
+               border-radius: 14px;
+               padding: 14px 40px;
+               font-size: 1.2rem;
+               font-weight: 600;
+               box-shadow: 0 0 25px rgba(162, 89, 255, 1), 0 0 10px rgba(255, 255, 255, 0.4);
+               transition: all 0.3s ease;
+               z-index: 2;
+               position: relative;
+           }
+
+        @keyframes gradientShift {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        /* Hover effect voor knop */
+           button.btn:hover {
+               transform: scale(1.08);
+               box-shadow: 0 0 40px rgba(255, 255, 255, 1), 0 0 60px rgba(162, 89, 255, 0.9);
+           }
+    </style>
+
+    <div class="form-card">
+        <!--  Titel van het formulier -->
+        <h2>Nieuwe Transactie Toevoegen</h2>
+
+        <!--  Start van Symfony form -->
+        {{ form_start(form) }}
+
+        <!-- Bedrag veld-->
+        <div class="mb-3">
+            {{ form_label(form.amount, 'Bedrag (€)') }}
+            {{ form_widget(form.amount, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <!-- Datum veld -->
+        <div class="mb-3">
+            {{ form_label(form.date, 'Datum') }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <!--  Notitie veld -->
+        <div class="mb-3">
+            {{ form_label(form.note, 'Notitie') }}
+            {{ form_widget(form.note, {'attr': {'class': 'form-control', 'rows':'3'}}) }}
+        </div>
+
+        <!--  Type veld (income / expense) -->
+        <div class="mb-3">
+            {{ form_label(form.type, 'Type (income/expense)') }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+        </div>
+
+        <!-- Gebruiker select -->
+        <div class="mb-3">
+            {{ form_label(form.user, 'Gebruiker') }}
+            {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}
+        </div>
+
+        <!-- Categorie select-->
+        <div class="mb-3">
+            {{ form_label(form.category, 'Categorie') }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}
+        </div>
+
+        <!--  Budget select -->
+        <div class="mb-3">
+            {{ form_label(form.budget, 'Budget') }}
+            {{ form_widget(form.budget, {'attr': {'class': 'form-select'}}) }}
+        </div>
+
+        <!-- Opslaan knop -->
+        <div class="text-end">
+            <button class="btn btn-lg">✨ Opslaan</button>
+        </div>
+
+        <!-- Einde van Symfony form-->
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* --- Algemene pagina styling --- */
+        body {
+            background-color: #0e0e12; /* donkere achtergrond */
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Container voor contactformulier */
+        .contact-container {
+            background: linear-gradient(135deg, #4b1ba1, #8e2de2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.6);
+            margin-top: 30px;
+            animation: fadeIn 1s ease-in-out; /* animatie bij laden */
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h1 {
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(162, 89, 255, 0.9);
+            text-align: center;
+        }
+
+        /* Kaart styling rondom formulier */
+        .card {
+            background-color: #1c1c24;
+            border-radius: 15px;
+            padding: 25px;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(162, 89, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.4);
+        }
+
+        /* Labels kleur */
+        label {
+            color: #a259ff;
+            font-weight: 600;
+        }
+
+        /* Input velden styling */
+        .form-control {
+            background-color: #2a2a33;
+            color: #ffffff; /* witte tekst */
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+
+        /* Placeholder kleur */
+        .form-control::placeholder {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        /* Focus effect */
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.7);
+        }
+
+        /* Submit knop */
+        .btn-primary {
+            background: linear-gradient(90deg, #a259ff, #7a00ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #7a00ff, #a259ff);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.7);
+        }
+
+        /* Link knop */
+        .btn-outline-secondary {
+            border-color: #a259ff;
+            color: #a259ff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #a259ff;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.7);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="contact-container">
+            <h1 class="text-center mb-4">📬 Neem contact met ons op</h1>
+
+            <!-- Form kaart -->
+            <div class="card p-4 mb-4">
+                {{ form_start(form) }}
+
+                <!-- Naam veld -->
+                <div class="mb-3">
+                    {{ form_label(form.name, 'Naam') }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Naam'}}) }}
+                </div>
+
+                <!-- E-mail veld -->
+                <div class="mb-3">
+                    {{ form_label(form.email, 'E-mail') }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'E-mail'}}) }}
+                </div>
+
+                <!-- Onderwerp veld -->
+                <div class="mb-3">
+                    {{ form_label(form.subject, 'Onderwerp') }}
+                    {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'placeholder': 'Onderwerp'}}) }}
+                </div>
+
+                <!-- Bericht veld -->
+                <div class="mb-3">
+                    {{ form_label(form.message, 'Bericht') }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Bericht...'}}) }}
+                </div>
+
+                <!-- Actie knoppen -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary px-4">Verzenden</button>
+                    <a href="{{ path('contact_messages') }}" class="btn btn-outline-secondary px-4">Bekijk berichten</a>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

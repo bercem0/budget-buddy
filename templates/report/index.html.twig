@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transactie Rapport{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4" style="background-color:#1c1c24; color:white; border-radius:20px;">
+            <!--  Titel van de pagina -->
+            <h2 class="mb-4 text-center" style="color:#a259ff;">Transactie Rapport</h2>
+
+            <!--  Tabel met alle transacties -->
+            <table class="table table-dark table-striped align-middle text-center" style="border-radius:10px; overflow:hidden;">
+                <thead style="background-color:#2d0f47;">
+                <tr>
+                    <th>ID</th>
+                    <th>Bedrag (€)</th>
+                    <th>Datum</th>
+                    <th>Type</th>
+                    <th>Gebruiker</th>
+                    <th>Categorie</th>
+                    <th>Budget</th>
+                    <th>Notitie</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if transactions is not empty %}
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.id }}</td>
+                            <td>{{ transaction.amount }}</td>
+                            <td>{{ transaction.date|date('Y-m-d') }}</td>
+                            <td>
+                                <!--  Kleurcode: groen = inkomsten, rood = uitgaven -->
+                                {% if transaction.type == 'income' %}
+                                    <span style="color:#4caf50;">{{ transaction.type }}</span>
+                                {% else %}
+                                    <span style="color:#ff5c5c;">{{ transaction.type }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ transaction.user ? transaction.user.email : 'N/A' }}</td>
+                            <td>{{ transaction.category ? transaction.category.name : 'N/A' }}</td>
+                            <td>
+                                {% if transaction.budget %}
+                                    {{ transaction.budget.category.name }} ({{ transaction.budget.amount }} €)
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>{{ transaction.note ?: '—' }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                <!--  Als er geen transacties zijn -->
+                    <tr>
+                        <td colspan="8" class="text-muted text-center py-3">Geen transacties gevonden.</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+            <!--  Financieel overzicht sectie -->
+            <hr class="my-4" style="border-color:#a259ff;">
+            <div class="text-center mb-3">
+                <h3 style="color:#a259ff;">Financieel Overzicht</h3>
+
+                <!--  Totale inkomsten en uitgaven berekenen -->
+                {% set totalIncome = 0 %}
+                {% set totalExpense = 0 %}
+                {% for t in transactions %}
+                    {% if t.type == 'income' %}
+                        {% set totalIncome = totalIncome + t.amount %}
+                    {% else %}
+                        {% set totalExpense = totalExpense + t.amount %}
+                    {% endif %}
+                {% endfor %}
+
+                {% set balance = totalIncome - totalExpense %}
+
+                <!--  Weergave van financiële cijfers -->
+                <p>Totale Inkomsten: <strong style="color:#4caf50;">€{{ totalIncome }}</strong></p>
+                <p>Totale Uitgaven: <strong style="color:#ff5c5c;">€{{ totalExpense }}</strong></p>
+                <p>Balans:
+                    {% if balance >= 0 %}
+                        <strong style="color:#4caf50;">+€{{ balance }}</strong>
+                    {% else %}
+                        <strong style="color:#ff5c5c;">-€{{ balance|abs }}</strong>
+                    {% endif %}
+                </p>
+
+                <!--  Advies op basis van de balans -->
+                <div class="mt-3">
+                    {% if balance > 0 %}
+                        <p class="text-success">Goed bezig! Je verdient meer dan je uitgeeft. Overweeg te investeren of te sparen 💰</p>
+                    {% elseif balance == 0 %}
+                        <p class="text-warning">Je zit precies in balans — probeer wat meer te sparen!</p>
+                    {% else %}
+                        <p class="text-danger">Je geeft meer uit dan je verdient 😟. Kijk waar je kunt besparen.</p>
+                    {% endif %}
+                </div>
+
+                <!--  Grafiek sectie: Doughnut chart voor inkomsten vs uitgaven -->
+                <canvas id="financeChart" width="400" height="200"></canvas>
+            </div>
+
+            <!--  Terug naar alle transacties knop -->
+            <div class="text-end mt-4">
+                <a href="{{ path('app_transaction') }}"
+                   class="btn btn-lg"
+                   style="background:linear-gradient(135deg,#a259ff,#7b3eea); color:white; border:none; border-radius:10px; padding:10px 25px;">
+                    Terug naar Transacties
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart.js configuratie
+        const ctx = document.getElementById('financeChart');
+        new Chart(ctx, {
+            type: 'doughnut', // Doughnut chart type
+            data: {
+                labels: ['Inkomsten', 'Uitgaven'], // Labels in de chart
+                datasets: [{
+                    data: [{{ totalIncome }}, {{ totalExpense }}], // Data dynamisch uit Twig variabelen
+                    backgroundColor: ['#4caf50', '#ff5c5c'], // Kleurcode: groen/rood
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    // Legenda aanpassen: wit label
+                    legend: { labels: { color: 'white' } }
+                }
+            }
+        });
+    </script>
+{% endblock %}

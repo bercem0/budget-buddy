@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorieën{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Body styling */
+        body {
+            background-color: #0e0e12;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Main container */
+        .custom-container {
+            background: linear-gradient(135deg, #4b1ba1, #8e2de2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.6);
+            margin-top: 40px;
+        }
+
+        /* Page title */
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 20px rgba(162, 89, 255, 0.9);
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        /* Add button */
+        .btn-add {
+            background: linear-gradient(90deg, #a259ff, #7a00ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.5);
+        }
+
+        .btn-add:hover {
+            background: linear-gradient(90deg, #7a00ff, #a259ff);
+            box-shadow: 0 0 25px rgba(162, 89, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Edit button */
+        .btn-edit {
+            background-color: #1abc9c;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            transition: all 0.3s ease;
+        }
+        .btn-edit:hover {
+            background-color: #16a085;
+            transform: scale(1.05);
+        }
+
+        /* Delete button */
+        .btn-delete {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            transition: all 0.3s ease;
+        }
+        .btn-delete:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;  /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        /* Modal content */
+        .modal-content {
+            background: linear-gradient(135deg, #4b1ba1, #8e2de2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(162, 89, 255, 0.8);
+            animation: pop 0.3s ease;
+        }
+
+        /* Pop animation */
+        @keyframes pop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Modal buttons */
+        .modal-buttons {
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            margin: 0 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container custom-container">
+        <!-- Page title -->
+        <h1>📂 Categorieën</h1>
+
+        <!-- Success flash messages -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-center fw-bold shadow-sm">{{ message }}</div>
+        {% endfor %}
+
+        <!-- Add button -->
+        <div class="text-end mb-4">
+            <a href="{{ path('category_new') }}" class="btn btn-add">+ Nieuwe Categorie</a>
+        </div>
+
+        <!-- Category table -->
+        <table class="table table-dark table-hover align-middle text-center">
+            <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Type</th>
+                <th>Aangemaakt op</th>
+                <th>Acties</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        {% if category.type == 'income' %}
+                            <span class="badge bg-success">Inkomen</span>
+                        {% else %}
+                            <span class="badge bg-danger">Uitgave</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ category.createdAt ? category.createdAt|date('d-m-Y') : '—' }}</td>
+                    <td>
+                        <!-- Edit button -->
+                        <a href="{{ path('category_edit', {'id': category.id}) }}" class="btn-edit">✏️ Bewerken</a>
+
+                        <!-- Delete button with modal -->
+                        <form method="post" action="{{ path('category_delete', {'id': category.id}) }}" style="display:inline;"
+                              onsubmit="return openModal(event, {{ category.id }})">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                            <button class="btn-delete">🗑️ Verwijderen</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6">Geen categorieën gevonden.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Confirm modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-content">
+            <h4>Weet je zeker dat je deze categorie wilt verwijderen?</h4>
+            <div class="modal-buttons">
+                <button id="confirmYes" class="btn btn-danger">Ja, verwijderen</button>
+                <button id="confirmNo" class="btn btn-secondary">Annuleren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal script -->
+    <script>
+        let currentForm;
+
+        /* Modal openen */
+        function openModal(event, id) {
+            event.preventDefault();  // Stop form submission
+            currentForm = event.target; // Set the form as currentForm
+            document.getElementById('confirmModal').style.display = 'flex'; // Show modal
+        }
+
+        /* Confirm delete */
+        document.getElementById('confirmYes').addEventListener('click', () => {
+            if (currentForm) {
+                currentForm.submit();  // Submit the form
+            }
+        });
+
+        /* Cancel delete */
+        document.getElementById('confirmNo').addEventListener('click', () => {
+            document.getElementById('confirmModal').style.display = 'none'; // Hide modal
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bedankt{% endblock %}
+
+{% block body %}
+    <style>
+        /* --- Gradient achtergrond wrapper --- */
+        .gradient-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #000000, #208a2a, #15532f, #ffffff);
+            background-size: 400% 400%;
+            animation: bgMove 15s ease infinite; /* langzaam bewegend gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Succes box --- */
+        .success-box {
+            max-width: 500px;
+            width: 100%;
+            padding: 50px 30px;
+            border-radius: 30px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            background: linear-gradient(45deg, #2ecc71, #27ae60, #1abc9c, #2ecc71);
+            background-size: 400% 400%;
+            animation: gradientAnim 6s ease infinite, popUp 0.6s ease forwards; /* gradient animatie + pop-up */
+        }
+
+        @keyframes gradientAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes popUp {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        h3 {
+            font-weight: 900;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(0,0,0,0.3); /* lichte schaduw voor tekst */
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- Terug knop --- */
+        .btn-success {
+            background-color: white;
+            color: #27ae60;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+            color: white;
+            transform: scale(1.05); /* lichte hover animatie */
+        }
+    </style>
+
+    <div class="gradient-wrapper">
+        <div class="success-box">
+            <h3>🎉 Uw bericht is succesvol verzonden!</h3> {# succes bericht #}
+            <p>We nemen zo snel mogelijk contact met u op.</p> {# korte uitleg #}
+            <a href="{{ path('app_contact') }}" class="btn-success">Terug naar contactpagina</a> {# knop terug naar formulier #}
+        </div>
+    </div>
+{% endblock %}

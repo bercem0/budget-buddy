@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ editMode is defined ? 'Categorie Bewerken' : 'Nieuwe Categorie' }}
+    {# Pagina titel: afhankelijk of we aan het bewerken of toevoegen zijn #}
+{% endblock %}
+
+{% block body %}
+    <style>
+        /* Algemene body styling */
+        body {
+            background: radial-gradient(circle at top left, #a259ff, #3b0a83, #120027);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Form card container */
+        .form-card {
+            background: rgba(25, 5, 45, 0.95);
+            border-radius: 25px;
+            padding: 45px;
+            max-width: 650px;
+            margin: 70px auto; /* gecentreerd */
+            box-shadow: 0 0 35px rgba(162, 89, 255, 0.8);
+            border: 1px solid rgba(162, 89, 255, 0.5);
+        }
+
+        /* Titel in de form card */
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(162, 89, 255, 1);
+            margin-bottom: 35px;
+        }
+
+        /* Input velden styling */
+        .form-control, .form-select {
+            background-color: rgba(45, 15, 71, 0.9);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px 15px;
+            box-shadow: inset 0 0 15px rgba(162, 89, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* Submit knop styling */
+        button.btn {
+            background: linear-gradient(90deg, #ff00ff, #a259ff, #00ffff);
+            background-size: 300% 300%;
+            animation: gradientShift 6s ease infinite; /* gradient animatie */
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 0 25px rgba(162, 89, 255, 1);
+            transition: all 0.3s ease;
+        }
+
+        button.btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 1);
+        }
+    </style>
+
+    <div class="form-card">
+        <!-- Form titel -->
+        <h2>{{ editMode ? 'Categorie Bewerken' : 'Nieuwe Categorie Toevoegen' }}</h2>
+
+        <!-- Form start -->
+        {{ form_start(form) }}
+
+        <!-- Naam veld -->
+        <div class="mb-3">
+            {{ form_label(form.name, 'Categorienaam') }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <!-- Type veld -->
+        <div class="mb-3">
+            {{ form_label(form.type, 'Categorie Type') }}
+            {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+        </div>
+
+        <!-- Submit knop -->
+        <div class="text-end">
+            <button class="btn btn-lg">
+                {{ editMode ? '💾 Bijwerken' : '✨ Opslaan' }}
+                {# Tekst verandert afhankelijk of we aan het bewerken of toevoegen zijn #}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+        {# Form einde #}
+    </div>
+{% endblock %}

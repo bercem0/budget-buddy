@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Budgets{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* --- Page Style --- */
+        body {
+            background-color: #0e0e12;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .budget-container {
+            background: linear-gradient(135deg, #4b1ba1, #8e2de2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.6);
+            margin-top: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h1 {
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(162, 89, 255, 0.9);
+        }
+
+        .table {
+            background-color: #1c1c24;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+        }
+
+        .table th {
+            background-color: #2a2a33;
+            color: #a259ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .table td {
+            color: #d214ef;
+            vertical-align: middle;
+        }
+
+        .btn-add {
+            background: linear-gradient(90deg, #a259ff, #7a00ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: linear-gradient(90deg, #7a00ff, #a259ff);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(162, 89, 255, 0.7);
+        }
+
+        .card-budget {
+            background-color: #1c1c24;
+            border-radius: 15px;
+            padding: 25px;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(162, 89, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .card-budget:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.4);
+        }
+
+        .amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #a259ff;
+            text-shadow: 0 0 10px rgba(162, 89, 255, 0.8);
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="budget-container">
+            <!-- Titel en knop voor nieuw budget -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>💰 Budget Overzicht</h1>  {# Titel van de pagina #}
+                <a href="{{ path('budget_new') }}" class="btn btn-add">+ Nieuwe Budget</a>  {# Link naar nieuwe budget aanmaken #}
+            </div>
+
+            <!-- Succes meldingen tonen -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success text-center shadow-sm">{{ message }}</div>  {# Flash bericht tonen als het succesvol was #}
+            {% endfor %}
+
+            <!-- Budget tabel -->
+            <table class="table table-hover text-center align-middle mt-4">
+                <thead>
+                <tr>
+                    <th>Gebruiker</th>   {# Kolom: wie de gebruiker is #}
+                    <th>Categorie</th>   {# Kolom: welke categorie #}
+                    <th>Bedrag (€)</th>  {# Kolom: budget bedrag #}
+                </tr>
+                </thead>
+                <tbody>
+                {% for budget in budgets %}
+                    <tr>
+                        <td>{{ budget.user.name }}</td>      {# Naam van de gebruiker #}
+                        <td>{{ budget.category.name }}</td>  {# Naam van de categorie #}
+                        <td class="amount">{{ budget.amount }}</td>  {# Bedrag van het budget #}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-muted py-4">Geen budgetten gevonden 😢</td>  {# Als er geen budgetten zijn #}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

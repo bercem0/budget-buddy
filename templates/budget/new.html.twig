@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nieuwe Budget Toevoegen{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: #0e0e12;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .budget-form-container {
+            background: linear-gradient(135deg, #4b1ba1, #8e2de2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.6);
+            margin-top: 40px;
+            animation: fadeIn 0.9s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h1 {
+            color: #fff;
+            font-weight: 800;
+            text-shadow: 0 0 20px rgba(162, 89, 255, 0.9);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /* FORM INPUTS */
+        .form-control, .form-select {
+            background-color: #1c1c24;
+            border: 1px solid #a259ff;
+            color: #f4eaff;
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .form-control::placeholder {
+            color: #bfa8ff;
+            opacity: 0.8;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #262633;
+            border-color: #a259ff;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(162, 89, 255, 0.8);
+        }
+
+        label {
+            color: #e5d7ff;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .btn-submit {
+            position: relative;
+            background: linear-gradient(90deg, #a259ff, #7a00ff);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-weight: 700;
+            font-size: 16px;
+            border-radius: 50px;
+            box-shadow: 0 0 25px rgba(162, 89, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(162, 89, 255, 0.8);
+        }
+
+        .back-link {
+            color: #a259ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(162, 89, 255, 0.8);
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="budget-form-container">
+            <!-- Pagina titel -->
+            <h1 class="text-center mb-4">💜 Nieuwe Budget Toevoegen</h1>
+
+            <!-- Formulier start -->
+            {{ form_start(form) }}
+
+            <!-- Gebruiker en categorie velden in één rij -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_label(form.user, 'Gebruiker') }}  {# Label voor gebruiker #}
+                    {{ form_widget(form.user, {'attr': {'class': 'form-select'}}) }}  {# Dropdown voor gebruiker #}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label(form.category, 'Categorie') }}  {# Label voor categorie #}
+                    {{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}  {# Dropdown voor categorie #}
+                </div>
+            </div>
+
+            <!-- Bedrag veld -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    {{ form_label(form.amount, 'Bedrag (€)') }}  {# Label voor bedrag #}
+                    {{ form_widget(form.amount, {'attr': {'class': 'form-control', 'placeholder': 'Voer bedrag in...'}}) }}  {# Input voor bedrag #}
+                </div>
+            </div>
+
+            <!-- Submit knop -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-check-circle"></i> Opslaan  {# Formulier opslaan #}
+                </button>
+            </div>
+
+            <!-- Formulier einde -->
+            {{ form_end(form) }}
+
+            <!-- Terug link -->
+            <div class="text-center mt-4">
+                <a href="{{ path('app_budget') }}" class="back-link">
+                    <i class="bi bi-arrow-left-circle"></i> Terug naar Overzicht  {# Link terug naar budget overzicht #}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

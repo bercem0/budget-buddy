@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Berichten{% endblock %}
+
+{% block body %}
+    <style>
+        /* --- Achtergrond en steranimatie --- */
+        .gradient-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at bottom, #1b0032 0%, #000000 100%);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        /* Ster elementen */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: starTwinkle 2s infinite alternate;
+        }
+
+        /* Container voor berichten */
+        .messages-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            padding: 40px;
+            border-radius: 25px;
+            background: rgba(30, 0, 60, 0.6);
+            box-shadow: 0 0 30px #8a2be2, 0 0 60px #00ffff;
+            color: #fff;
+            text-align: center;
+            backdrop-filter: blur(10px); /* lichte blur effect */
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #a100ff;
+            text-shadow: 0 0 10px #1f1f20, 0 0 20px #18e6ff;
+        }
+
+        /* Tabel styling */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        th, td { padding: 12px 15px; text-align: center; }
+        thead {
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            font-weight: 700;
+            color: white;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(255,255,255,0.05);
+        }
+
+        tbody tr:hover {
+            box-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffff;
+            transform: scale(1.02);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Info alert als er nog geen berichten zijn */
+        .alert-info {
+            background: rgba(255, 0, 255, 0.3);
+            color: white;
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px #ff00ff;
+            max-width: 500px;
+            margin: 30px auto;
+        }
+
+        /* Neon knop terug naar formulier */
+        .btn-secondary {
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 700;
+            background: none;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff;
+        }
+
+        .btn-secondary:hover {
+            background: #00ffff;
+            color: #6a0dad;
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 0 20px #00ffff, 0 0 40px #ff00ff;
+        }
+
+        /* Responsieve stijl voor kleinere schermen */
+        @media (max-width: 768px) {
+            .messages-container { padding: 20px; }
+            table { font-size: 0.9rem; }
+        }
+    </style>
+
+    <div class="gradient-wrapper">
+        <!-- Sterren -->
+        {% for i in 1..250 %}
+            <div class="star" style="top: {{ random(0,100) }}%; left: {{ random(0,100) }}%; animation-duration: {{ random(1,3) }}s;"></div>
+        {% endfor %}
+
+        <div class="messages-container">
+            <h1>Ontvangen berichten</h1>
+
+            {% if messages is empty %}
+                <div class="alert-info">Nog geen berichten ontvangen.</div>
+            {% else %}
+                <div style="overflow-x:auto;">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>E-mail</th>
+                            <th>Onderwerp</th>
+                            <th>Bericht</th>
+                            <th>Datum</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for msg in messages %}
+                            <tr>
+                                <td>{{ msg.name }}</td> {# naam van afzender #}
+                                <td>{{ msg.email }}</td> {# e-mail van afzender #}
+                                <td>{{ msg.subject }}</td> {# onderwerp bericht #}
+                                <td>{{ msg.message }}</td> {# inhoud bericht #}
+                                <td>{{ msg.createdAt|date('d-m-Y H:i') }}</td> {# datum en tijd #}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-3">
+                <a href="{{ path('app_contact') }}" class="btn-secondary">Terug naar formulier</a> {# knop terug naar contactformulier #}
+            </div>
+        </div>
+    </div>
+{% endblock %}

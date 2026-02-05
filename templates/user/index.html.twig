@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <!-- Hoofd titel van het dashboard-->
+        <h1 class="text-center mb-4">Welcome to Your Dashboard</h1>
+
+        <!--  Controleren of er een ingelogde gebruiker is-->
+        {% if user %}
+        <!--  Groet de gebruiker persoonlijk-->
+            <p>Hello, <strong>{{ user.name }}</strong>!</p>
+        <!-- Link naar het profiel van de gebruiker-->
+            <p><a href="{{ path('profile') }}">Go to your Profile</a></p>
+        {% else %}
+        <!--  Als er geen gebruiker gevonden is -->
+            <p>User not found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

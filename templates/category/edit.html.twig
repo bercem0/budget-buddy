@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorie Bewerken{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Container styling */
+        .custom-container {
+            background: linear-gradient(135deg, #4b1ba1, #811ba1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(131, 27, 161, 0.8);
+            color: white;
+            min-height: 85vh;
+        }
+
+        /* Titel styling */
+        h1 {
+            color: #e5d7ff;
+            font-weight: 900;
+            text-shadow: 0 0 15px rgba(131, 27, 161, 0.9);
+            letter-spacing: 1.5px;
+        }
+
+        /* Submit knop */
+        .btn-success {
+            background-color: #2ecc71 !important;
+            color: white !important;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60 !important;
+            box-shadow: 0 0 25px rgba(39, 174, 96, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Form velden styling */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(131, 27, 161, 0.2);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(131, 27, 161, 0.5);
+        }
+
+        /* Card styling */
+        .card-body {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(131, 27, 161, 0.2);
+        }
+
+        /* Tekst rechts uitlijnen */
+        .text-end {
+            text-align: right;
+        }
+
+        /* Success message */
+        .alert-success {
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 0 15px #2ecc71;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5 custom-container">
+        <!-- Pagina titel -->
+        <h1 class="mb-4">Categorie Bewerken</h1>
+
+        <!-- Succes flash messages -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Formulier start -->
+                {{ form_start(form) }}
+
+                <!-- Naam veld -->
+                <div class="mb-3">
+                    {{ form_label(form.name, 'Categorienaam') }}  {# Label voor naam #}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}  {# Input voor naam #}
+                </div>
+
+                <!-- Type veld -->
+                <div class="mb-3">
+                    {{ form_label(form.type, 'Categorie Type') }}  {# Label voor type #}
+                    {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}  {# Dropdown voor type #}
+                </div>
+
+                <!-- Submit knop -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">
+                        {{ form.save.vars.label|default('Opslaan') }}  {# Knop label #}
+                    </button>
+                </div>
+
+                <!-- Formulier einde -->
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
